@@ -14,7 +14,7 @@ const ProductList = ({ products }) => {
 
 export default ProductList;
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const response = await fetch("http://localhost:5000/products");
   const data = await response.json();
   console.log(data);
@@ -23,6 +23,5 @@ export const getStaticProps = async () => {
     props: {
       products: data,
     },
-    revalidate: 1,
   };
 };
