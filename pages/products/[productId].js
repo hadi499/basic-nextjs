@@ -1,24 +1,31 @@
-const ProductId = ({ product }) => {
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
+const ProductId = () => {
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+
+  const router = useRouter();
+  const { productId } = router.query;
+
+  useEffect(() => {
+    const getProductById = async () => {
+      const response = await fetch(
+        `http://localhost:5000/products/${productId}`
+      );
+      const data = await response.json();
+      setName(data.name);
+      setPrice(data.price);
+    };
+    getProductById();
+  }, [productId]);
   return (
     <div>
       <h3>
-        {product.name} - {product.price}
+        {name} - {price}
       </h3>
     </div>
   );
 };
 
 export default ProductId;
-
-export const getServerSideProps = async ({ params }) => {
-  const response = await fetch(
-    `http://localhost:5000/products/${params.productId}`
-  );
-  const data = await response.json();
-
-  return {
-    props: {
-      product: data,
-    },
-  };
-};

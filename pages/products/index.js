@@ -1,4 +1,16 @@
-const ProductList = ({ products }) => {
+import { useEffect, useState } from "react";
+
+const ProductList = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const response = await fetch("http://localhost:5000/products");
+      const data = await response.json();
+      setProducts(data);
+    };
+    getProducts();
+  }, []);
   return (
     <div>
       {products.map((item) => (
@@ -13,15 +25,3 @@ const ProductList = ({ products }) => {
 };
 
 export default ProductList;
-
-export const getServerSideProps = async () => {
-  const response = await fetch("http://localhost:5000/products");
-  const data = await response.json();
-  console.log(data);
-
-  return {
-    props: {
-      products: data,
-    },
-  };
-};
